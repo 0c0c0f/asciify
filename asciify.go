@@ -1,7 +1,7 @@
 package asciify
 
 import (
-	"errors"
+	"fmt"
 	"image"
 	"image/color"
 	"math"
@@ -35,7 +35,7 @@ func (p CharacterPalette) color(character string) (color.Color, error) {
 	}
 
 	if idx == -1 {
-		return nil, errors.New("character not found in palette")
+		return nil, fmt.Errorf("character not found in palette: %s", character)
 	}
 
 	col := uint8(math.Round((float64(idx+1) / float64(len(p))) * 255))
