@@ -30,10 +30,10 @@ fmt.Println(result.String())
 <details>
   <summary>Result</summary>
 
-  ## Input
+  ### Input
   <img src="test_fixtures/gopher.png"/>
 
-  ## Output
+  ### Output
   ```
         'I]fzJYv|<`       
       '-cQZmmmmO0QY['^:.  
@@ -92,10 +92,10 @@ fmt.Println(result.String())
 <details>
   <summary>Result</summary>
 
-  ## Input
+  ### Input
   <img src="test_fixtures/gopher.png"/>
 
-  ## Output
+  ### Output
   ```
   33333333221CCCC1233333333
   3333332CCBBBBBCCCC1332333
