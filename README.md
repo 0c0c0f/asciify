@@ -14,7 +14,7 @@ go get github.com/tjhorner/asciify
 
 ## Examples
 
-### Default Palette
+### Asciify With Default Palette
 
 Pass in an `image.Image` to `Asciify` and it will do the thing.
 
@@ -74,7 +74,7 @@ fmt.Println(result.String())
   ```
 </details>
 
-### Custom Palette
+### Asciify With Custom Palette
 
 You can also use custom character palettes if you want. The default palette is suitable for most cases, but you might want to use different characters for different scenarios.
 
