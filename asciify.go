@@ -83,8 +83,7 @@ func (a ASCIIArt) String() string {
 	result := ""
 
 	for _, x := range a {
-		result += strings.Join(x, "")
-		result += "\n"
+		result += strings.Join(x, "") + "\n"
 	}
 
 	return result
