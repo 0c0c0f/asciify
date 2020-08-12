@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="js/wasm_exec.js"></script>
+    <script>
+			const go = new Go();
+			WebAssembly.instantiateStreaming(fetch("js/main.wasm"), go.importObject).then((result) => {
+				go.run(result.instance);
+      });
+      
+      function imagifySubmit() {
+        const result = imagify(imagify_input.value)
+        if(result.indexOf("error:") === 0) {
+          imagify_error.innerText = result
+          imagify_error.style.display = "initial"
+          imagify_output.style.display = "none"
+        } else {
+          imagify_output.src = `data:image/png;base64,${result}`
+          imagify_error.style.display = "none"
+          imagify_output.style.display = "initial"
+        }
+      }
+
+      // https://stackoverflow.com/a/57272491/2449940
+      const toBase64 = file => new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+      });
+
+      async function asciifySubmit() {
+        const data = (await toBase64(asciify_input.files[0])).split(",")[1]
+        asciify_output.innerText = asciify(data)
+      }
+
+      function copyFromAsciify() {
+        imagify_input.value = asciify_output.innerText
+      }
+		</script>
+    <title>Asciify Demo</title>
+  </head>
+  <body>
+    <h2>Asciify</h2>
+
+    <p>
+      Input (PNG or JPG): <input id="asciify_input" type="file">
+    </p>
+
+    <button onclick="asciifySubmit()">Asciify</button>
+
+    <p>
+      Output:<br>
+      <pre id="asciify_output" style="font-size: 1px; line-height: 100%"></pre>
+    </p>
+
+    <hr>
+
+    <h2>Imagify</h2>
+
+    <p>
+      Input:<br>
+      <button onclick="copyFromAsciify()">Copy from asciified output</button><br>
+      <textarea id="imagify_input"></textarea>
+    </p>
+
+    <button onclick="imagifySubmit()">Imagify</button>
+
+    <p>
+      Output:<br>
+      <img id="imagify_output"/>
+      <span id="imagify_error" style="display: none"></span>
+    </p>
+  </body>
+</html>
