@@ -1,5 +1,7 @@
 # asciify
 
+[![GoDoc](https://godoc.org/github.com/tjhorner/makerbot-rpc?status.svg)](https://pkg.go.dev/github.com/tjhorner/asciify)
+
 Asciify is an ASCII art library written in Go. It has no external dependencies and is fairly customizable.
 
 You can use it to convert images to ASCII art.
