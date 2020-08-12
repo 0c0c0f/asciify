@@ -4,7 +4,7 @@
 
 Asciify is an ASCII art library written in Go. It has no external dependencies and is fairly customizable.
 
-You can use it to convert images to ASCII art.
+You can use it to convert images to ASCII art (and back to an image again, if you really want to).
 
 ## Usage
 
