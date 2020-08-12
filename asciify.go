@@ -5,6 +5,7 @@ import (
 	"image"
 	"image/color"
 	"math"
+	"strings"
 )
 
 // CharacterPalette is a type which represents a set of characters to use in art,
@@ -14,9 +15,7 @@ type CharacterPalette []string
 // pick selects a value from the character palette based on the
 // given brightness, whose range is assumed to be [0, 65535]
 func (p CharacterPalette) pick(brightness uint32) string {
-	// We want the inverse of the alpha value since the palette goes
-	// from dark to light
-	pct := 1.0 - (float64(brightness) / 65535.0)
+	pct := float64(brightness) / 65535.0
 
 	max := len(p) - 1
 	idx := int(math.Round(float64(max) * pct))
@@ -59,14 +58,14 @@ var DefaultCharacterPalette = CharacterPalette{
 	"!", "l", "I", ";", ":", ",", "\"", "^", "`", "'", ".", " ",
 }
 
-// rgbaBrightness calculates the luminance of a color.Color
+// rgbaLuminance calculates the luminance of a color.Color
 // value. The luminance range is [0, 65535).
-func rgbaBrightness(col color.Color) uint32 {
+func rgbaLuminance(col color.Color) uint32 {
 	r, g, b, a := col.RGBA()
 
 	// https://stackoverflow.com/a/596243/2449940
 	rawLum := 0.299*float64(r) + 0.587*float64(g) + 0.114*float64(b)
-	lum := rawLum * (float64(a) / 65535.0)
+	lum := math.Max(rawLum, 65535.0-float64(a))
 
 	return uint32(math.Round(lum))
 }
@@ -80,12 +79,11 @@ type ASCIIArt [][]string
 // String turns the matrix into a single string,
 // with each row separated by a line break.
 func (a ASCIIArt) String() string {
+	// TODO: could use Builder here?
 	result := ""
 
 	for _, x := range a {
-		for _, y := range x {
-			result += y
-		}
+		result += strings.Join(x, "")
 		result += "\n"
 	}
 
@@ -104,7 +102,7 @@ func Asciify(image image.Image, palette CharacterPalette) ASCIIArt {
 	for y := bounds.Min.Y; y < bounds.Max.Y; y++ {
 		art[y] = make([]string, bounds.Max.X)
 		for x := bounds.Min.X; x < bounds.Max.X; x++ {
-			art[y][x] = palette.pick(rgbaBrightness(image.At(x, y)))
+			art[y][x] = palette.pick(rgbaLuminance(image.At(x, y)))
 		}
 	}
 

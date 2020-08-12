@@ -32,6 +32,34 @@ func ExampleAsciify() {
 	fmt.Println(result.String())
 }
 
+func TestAsciify_LargeImage(t *testing.T) {
+	img, err := os.Open("./test_fixtures/sam.png")
+	oops(t, err)
+
+	expectedASCII, err := ioutil.ReadFile("./test_fixtures/sam.txt")
+	oops(t, err)
+
+	sam, err := png.Decode(img)
+	oops(t, err)
+
+	result := asciify.Asciify(sam, asciify.DefaultCharacterPalette)
+
+	// Correct width
+	if len(result) != sam.Bounds().Max.Y {
+		t.Errorf("len(result) = %d; want %d", len(result), sam.Bounds().Max.Y)
+	}
+
+	// Correct height
+	if len(result[0]) != sam.Bounds().Max.X {
+		t.Errorf("len(result[0]) = %d; want %d", len(result[0]), sam.Bounds().Max.X)
+	}
+
+	// Actual ASCII matches what we want
+	if result.String() != string(expectedASCII) {
+		t.Error(("result.String() did not match expected value"))
+	}
+}
+
 func TestAsciify_DefaultValues(t *testing.T) {
 	img, err := os.Open("./test_fixtures/gopher.png")
 	oops(t, err)
