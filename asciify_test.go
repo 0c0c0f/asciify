@@ -89,3 +89,35 @@ func TestAsciify_CustomPalette(t *testing.T) {
 		t.Error(("result.String() did not match expected value"))
 	}
 }
+
+func TestImagify(t *testing.T) {
+	img, err := os.Open("./test_fixtures/gopher.png")
+	oops(t, err)
+
+	gopher, err := png.Decode(img)
+	oops(t, err)
+
+	expectedImg, err := os.Open("./test_fixtures/gopher.png")
+	oops(t, err)
+
+	demonGopher, err := png.Decode(expectedImg)
+	oops(t, err)
+
+	result := asciify.Asciify(gopher, asciify.DefaultCharacterPalette)
+
+	imagified, err := asciify.Imagify(result, asciify.DefaultCharacterPalette)
+	oops(t, err)
+
+	// Correct width
+	if imagified.Bounds().Max.Y != demonGopher.Bounds().Max.Y {
+		t.Errorf("imagified.Bounds().Max.Y = %d; want %d", imagified.Bounds().Max.Y, demonGopher.Bounds().Max.Y)
+	}
+
+	// Correct height
+	if imagified.Bounds().Max.X != demonGopher.Bounds().Max.X {
+		t.Errorf("imagified.Bounds().Max.X = %d; want %d", imagified.Bounds().Max.X, demonGopher.Bounds().Max.X)
+	}
+
+	// I don't think the rest is worth testing, but if you do,
+	// feel free to finish the test lol.
+}

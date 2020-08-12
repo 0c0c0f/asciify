@@ -136,11 +136,74 @@ fmt.Println(result.String())
   ```
 </details>
 
+### Imagify
+
+If you have some ASCII art and know the palette that was used to create it, you can also turn it back into an image.
+
+This is pretty much just for fun and shouldn't ever be used in any serious way, as the resulting image will be extremely lossy (depending on your palette) and in grayscale.
+
+```go
+// Turn an image into ASCII art
+result := asciify.Asciify(img, asciify.DefaultCharacterPalette)
+
+// Then re-imagify it
+imagified, _ := asciify.Imagify(result, asciify.DefaultCharacterPalette)
+```
+
+<details>
+  <summary>Result</summary>
+
+  ### Input
+  ```
+        'I]fzJYv|<`       
+      '-cQZmmmmO0QY['^:.  
+  ^tn?uOdbZ0mm0p#Mk0XvLn' 
+  .rxjLm%$$@pOOp8$$$kOz}O< 
+  `J-rOZfh$$W00U_k$$&0ZuO> 
+  {z0Ou;O$$80Ov~b$$W0mJ}. 
+    }mOmm8$$hCYOo@$BqOwC'  
+    )mm0kWMbU<`[ZbdZ0mmO,  
+    rmmmO00QL/}zL0OZmmmZ!  
+    ummmmmm0wdwbZ0mmmmmm+  
+    ummmmmmZCbpZLmmmmmmm?  
+    xmmmmmmm0qmZZmmmmmmm[  
+    tmmmmmmmZQQ0mmmmmmmm}  
+    )mmmmmmmmmmmmmmmmmmm}  
+    ]mmmmmmmmmmmmmmmmmmm{  
+    _mmmmmmmmmmmmmmmmmmm1  
+  .]mmmmmmmmmmmmmmmmmmmf^ 
+  ?OJmmmmmmmmmmmmmmmmmmmCm1
+  {f/mmmmmmmmmmmmmmmmmmmc)-
+    -mmmmmmmmmmmmmmmmmmmn. 
+    }mmmmmmmmmmmmmmmmmmmc. 
+    |mmmmmmmmmmmmmmmmmmmz. 
+    fmmmmmmmmmmmmmmmmmmmX. 
+    rmmmmmmmmmmmmmmmmmmmz. 
+    rmmmmmmmmmmmmmmmmmmmn  
+    tmmmmmmmmmmmmmmmmmmm|  
+    {mmmmmmmmmmmmmmmmmmm_  
+    immmmmmmmmmmmmmmmmmO,  
+    `Cmmmmmmmmmmmmmmmmmx.  
+    ]mmmmmmmmmmmmmmmmOI   
+    .jmmmmmmmmmmmmmwO{    
+    ^cC0mmmmmmmmmmZYJC"   
+    .uhr;_xJ0ZZOQX/i'_p1   
+    }/.   `,;I:^'    ~,   
+  ```
+
+  ### Output
+  <img src="test_fixtures/demon_gopher.png"/>
+</details>
+
 ## FAQ
 
 ### Can I resize the output image?
 
 No, as that is outside the scope of this project. Since asciify takes in an `image.Image`, it's compatible with the rest of the Go ecosystem, so you could use a library like this to do the resizing before you asciify the image: https://github.com/nfnt/resize
+
+### Shouldn't you be using runes instead of strings?
+
+Probably. My excuse is that someone somewhere might want to use multiple characters to represent a pixel.
 
 ## License
 
